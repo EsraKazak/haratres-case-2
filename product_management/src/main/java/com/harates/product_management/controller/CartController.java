@@ -1,8 +1,6 @@
 package com.harates.product_management.controller;
 
 import java.util.List;
-import java.util.stream.Stream;
-
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.harates.product_management.dto.CartItemRequest;
 import com.harates.product_management.dto.CartItemResponse;
 import com.harates.product_management.dto.CartResponse;
-import com.harates.product_management.model.CartItem;
 import com.harates.product_management.service.CartService;
 
 @RestController
