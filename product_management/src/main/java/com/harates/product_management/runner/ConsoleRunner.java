@@ -5,6 +5,7 @@ import java.util.Locale;
 import java.util.Scanner;
 
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import com.harates.product_management.model.CartItem;
@@ -14,18 +15,27 @@ import com.harates.product_management.service.ProductService;
 import com.harates.product_management.service.SortService;
 
 @Component
+@Profile("console")
 public class ConsoleRunner implements CommandLineRunner {
 
     private final ProductService productService;
     private final SortService sortService;
     private final CartService cartService;
 
-    private final Scanner scanner = new Scanner(System.in);
+    private final Scanner scanner;
 
     public ConsoleRunner(ProductService productService, SortService sortService, CartService cartService) {
         this.productService = productService;
         this.sortService = sortService;
         this.cartService = cartService;
+
+        Scanner tempScanner;
+        try {
+            tempScanner = new Scanner(System.in, "UTF-8");
+        } catch (Exception e) {
+            tempScanner = new Scanner(System.in);
+        }
+        this.scanner = tempScanner;
     }
 
     @Override
@@ -108,7 +118,7 @@ public class ConsoleRunner implements CommandLineRunner {
                 artan = false;
                 break;
             }
-            System.out.println("Lütfen Artan ya da Azalan yazın):).");
+            System.out.println("Lütfen artan ya da azalan yazın.");
 
         }
         List<Product> urunListe = productService.getAllProducts();
@@ -137,7 +147,7 @@ public class ConsoleRunner implements CommandLineRunner {
             String cevap = okuString(soru);
             if (cevap.equalsIgnoreCase("hayır") || cevap.equalsIgnoreCase("hayir")) {
                 if (cartService.getCartSize() < 2) {
-                    System.out.println("En az 2 ürün almalısınızı");
+                    System.out.println("Sepete en az 2 farklı ürün eklemelisiniz.");
                     continue;
                 }
                 break;
@@ -154,7 +164,8 @@ public class ConsoleRunner implements CommandLineRunner {
                 try {
 
                     CartItem item = cartService.addToCart(ad, adet);
-                    System.out.println(item.getProduct().getAd() + "Sepetinize eklendi.");
+                    System.out.println(item.getProduct().getAd() + " Sepetinize eklendi.");
+                    ilkMi = false;
                     break;
 
                 } catch (IllegalArgumentException e) {
@@ -164,9 +175,9 @@ public class ConsoleRunner implements CommandLineRunner {
         }
 
         double toplam = cartService.calculateTotal();
-        System.out.print("Sepetiniz :");
+        System.out.println("Sepetiniz:");
         for (CartItem item : cartService.getCartItems()) {
-            System.out.println(item.getProduct().getAd() + "- Adet: " + item.getAdet() + ", Toplam Fiyat: "
+            System.out.println(item.getProduct().getAd() + " - Adet: " + item.getAdet() + ", Toplam Fiyat: "
                     + String.format(Locale.US, "%.2f", item.getToplamFiyat()));
         }
 

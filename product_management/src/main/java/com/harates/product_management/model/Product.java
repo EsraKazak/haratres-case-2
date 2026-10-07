@@ -33,7 +33,8 @@ public class Product {
 
     @Override
     public String toString() {
-        return String.format(Locale.US, "%s - Fiyat %.2f, Stok : %d, Değerlendirme : %.2f", ad, fiyat, stok, puan);
+        return String.format(Locale.US, "%s - Fiyat: %.2f, Stok: %d, Değerlendirme: %.1f",
+                ad, fiyat, stok, puan);
     }
 
 }
